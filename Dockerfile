@@ -4,7 +4,7 @@ USER root
 RUN find /usr/share/nginx/html -mindepth 1 -maxdepth 1 -delete
 
 COPY --chown=101:101 nginx.conf /etc/nginx/conf.d/default.conf
-COPY --chown=101:101 dist/ /usr/share/nginx/html/
+COPY --chown=101:101 docs/ /usr/share/nginx/html/
 
 USER 101:101
 

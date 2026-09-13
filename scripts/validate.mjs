@@ -4,7 +4,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const repositoryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const publicDirectory = path.join(repositoryRoot, 'dist');
+const publicDirectoryName = 'docs';
+const publicDirectory = path.join(repositoryRoot, publicDirectoryName);
 const errors = [];
 
 async function walk(directory) {
@@ -43,9 +44,9 @@ const requiredFiles = [
 for (const requiredFile of requiredFiles) {
   try {
     const details = await stat(path.join(publicDirectory, requiredFile));
-    if (!details.isFile()) errors.push(`dist/${requiredFile}: required path is not a file`);
+    if (!details.isFile()) errors.push(`${publicDirectoryName}/${requiredFile}: required path is not a file`);
   } catch {
-    errors.push(`dist/${requiredFile}: required file is missing`);
+    errors.push(`${publicDirectoryName}/${requiredFile}: required file is missing`);
   }
 }
 
@@ -87,7 +88,7 @@ for (const file of htmlFiles) {
     if (!cleanReference) continue;
     const target = path.resolve(path.dirname(file), cleanReference);
     if (!target.startsWith(publicDirectory + path.sep)) {
-      fail(file, `reference escapes dist: ${reference}`);
+      fail(file, `reference escapes ${publicDirectoryName}: ${reference}`);
       continue;
     }
     try {

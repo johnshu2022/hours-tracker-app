@@ -2,19 +2,19 @@
 
 A responsive, browser-based work-hours tracker built with HTML, CSS, and JavaScript. It records shifts and breaks, calculates net hours for the day, week, and month, displays a seven-day chart, and imports or exports time-card data as CSV or PDF.
 
-This package is Hourglass build 31. The `dist` directory is now the single website source used by both GitHub Pages and the Podman container. The included GitHub Actions workflow validates every pull request and automatically deploys validated changes from `main`.
+This package is Hourglass build 32. The `docs` directory is the single website source used by both GitHub Pages and the Podman container. GitHub Pages publishes it directly from the `main` branch, without GitHub Actions.
 
-## GitHub Pages CI/CD
+## GitHub Pages
 
 1. Put the complete project at the root of your GitHub repository.
 2. Commit and push the files to the `main` branch.
 3. Open the repository's **Settings**, then **Pages**.
-4. Under **Build and deployment**, set **Source** to **GitHub Actions**.
-5. Open the repository's **Actions** tab and select **Validate and deploy Hourglass** to monitor the first deployment.
+4. Under **Build and deployment**, set **Source** to **Deploy from a branch**.
+5. Select the `main` branch and `/docs` folder, then choose **Save**.
 
-The workflow uses no repository secrets. It gives validation jobs read-only access and grants Pages deployment permissions only to the deployment job. GitHub-maintained actions are pinned to immutable commit revisions and Dependabot is configured to propose action updates.
+GitHub Pages will publish changes after they are committed and pushed to `main`. No workflow, action dependency, deployment token, or repository secret is required.
 
-For later changes, edit files inside `dist`, commit them on a separate branch, and open a pull request. The validation job checks JavaScript syntax, HTML IDs, local assets, relative paths, browser security policies, and accidental sensitive files. Merging a passing pull request into `main` publishes it automatically.
+For later changes, edit files inside `docs`, run the included validator locally, and then commit them. The validator checks JavaScript syntax, HTML IDs, local assets, relative paths, browser security policies, and accidental sensitive files.
 
 Run the same validation locally with:
 
@@ -22,7 +22,7 @@ Run the same validation locally with:
 node scripts/validate.mjs
 ```
 
-After the first successful workflow run, you can create a repository ruleset that requires the **Validate static app** check before merging into `main`.
+Because there is no automated workflow, GitHub will not run the validator for you. Run it before every push and consider protecting `main` from accidental force-pushes or deletion with a repository ruleset.
 
 CSV imports require `Date`, `Clock In`, and `Clock Out` headers. `Job`, `Break Minutes`, and `Notes` are optional. Dates may use `YYYY-MM-DD` or U.S. `MM/DD/YYYY`; times may use 24-hour time or `AM`/`PM`. Duplicate shifts are skipped.
 
