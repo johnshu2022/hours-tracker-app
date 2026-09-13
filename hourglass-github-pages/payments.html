@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'self'; worker-src 'none'; manifest-src 'self'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="description" content="Record paychecks and link them to Hourglass shifts.">
+  <title>Hourglass — Payments</title>
+  <link rel="stylesheet" href="styles.css?v=25">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Hourglass dashboard">
+      <span class="brand-mark" aria-hidden="true">H</span>
+      <span>Hourglass</span>
+    </a>
+    <div class="header-tools">
+      <nav aria-label="Primary navigation">
+        <a href="index.html">Dashboard</a>
+        <a href="entry.html">Time entries</a>
+        <a class="active" href="payments.html" aria-current="page">Payments</a>
+        <a href="settings.html">Settings</a>
+      </nav>
+      <div class="profile-controls">
+        <select id="profile-switcher" aria-label="Current user"></select>
+        <button class="profile-add" id="create-profile-open" type="button">New user</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="shell payments-shell">
+    <section class="page-heading compact-heading">
+      <div>
+        <p class="eyebrow">Pay records</p>
+        <h1>Payment history.</h1>
+      </div>
+      <button class="button primary" id="new-payment" type="button">Record a payment</button>
+    </section>
+
+    <section class="metric-grid payment-metrics" aria-label="Payment summary">
+      <article class="metric-card awaiting-card">
+        <span>Awaiting payment</span>
+        <strong id="payment-awaiting-hours">0.00h</strong>
+        <small id="payment-awaiting-pay">$0.00 expected gross</small>
+      </article>
+      <article class="metric-card">
+        <span>Received this month</span>
+        <strong id="payment-month-net">$0.00</strong>
+        <small id="payment-month-count">No payments recorded</small>
+      </article>
+      <article class="metric-card">
+        <span>Gross discrepancies</span>
+        <strong id="payment-discrepancy-count">0</strong>
+        <small>Reported gross versus expected wages</small>
+      </article>
+    </section>
+
+    <section class="payments-layout">
+      <form class="panel payment-form" id="payment-form">
+        <input id="payment-id" type="hidden">
+        <div class="section-line">
+          <div>
+            <p class="eyebrow">Paycheck details</p>
+            <h2 id="payment-form-title">Record a payment</h2>
+          </div>
+        </div>
+
+        <div class="form-grid payment-fields">
+          <label class="field"><span>Job</span><select id="payment-job"></select></label>
+          <label class="field"><span>Payment date</span><input id="payment-date" type="date" required></label>
+          <label class="field"><span>Pay period starts</span><input id="payment-period-start" type="date" required></label>
+          <label class="field"><span>Pay period ends</span><input id="payment-period-end" type="date" required></label>
+          <label class="field"><span>Payment method</span><select id="payment-method">
+            <option value="direct-deposit">Direct deposit</option>
+            <option value="check">Check</option>
+            <option value="cash">Cash</option>
+            <option value="other">Other</option>
+          </select></label>
+          <label class="field"><span>Reference <em>optional</em></span><input id="payment-reference" type="text" maxlength="80" placeholder="Check or transaction number"></label>
+          <label class="field"><span>Paycheck gross amount</span><input id="payment-gross" type="number" min="0" max="1000000000" step="0.01" inputmode="decimal" required placeholder="0.00"></label>
+          <label class="field"><span>Net amount received</span><input id="payment-net" type="number" min="0" max="1000000000" step="0.01" inputmode="decimal" required placeholder="0.00"></label>
+          <label class="field full-field"><span>Notes <em>optional</em></span><textarea id="payment-notes" rows="3" maxlength="500" placeholder="Adjustments, reimbursements, or anything worth remembering"></textarea></label>
+        </div>
+
+        <div class="payment-shift-section">
+          <div class="section-line">
+            <div>
+              <h2>Select shifts awaiting payment</h2>
+              <p>Only shifts for this job and pay period are shown.</p>
+            </div>
+            <div class="payment-expected" aria-live="polite">
+              <span>Expected gross</span>
+              <strong id="payment-expected">$0.00</strong>
+              <small id="payment-selected-hours">0.00 hours</small>
+            </div>
+          </div>
+          <div class="payment-shift-list" id="payment-shift-list"></div>
+        </div>
+
+        <div class="form-message" id="payment-form-message" role="alert" aria-live="polite"></div>
+        <div class="form-actions">
+          <button class="button primary" id="save-payment" type="submit">Save payment</button>
+          <button class="button secondary hidden" id="cancel-payment-edit" type="button">Cancel edit</button>
+        </div>
+      </form>
+
+      <aside class="panel payment-guidance">
+        <p class="eyebrow">How comparison works</p>
+        <h2>Compare gross with gross.</h2>
+        <p>Expected gross is calculated from the selected shifts and job wage. Compare it with the paycheck’s reported gross amount—not the net deposit after taxes and deductions.</p>
+        <p>A difference is a review flag, not automatic proof of an incorrect paycheck.</p>
+      </aside>
+    </section>
+
+    <section class="panel payment-history" aria-labelledby="payment-history-title">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">Recorded paychecks</p>
+          <h2 id="payment-history-title">History</h2>
+        </div>
+      </div>
+      <div class="payment-list" id="payment-list"></div>
+      <div class="empty-state hidden" id="payment-empty">
+        <strong>No payments recorded</strong>
+        <span>Select shifts awaiting payment above to create the first payment.</span>
+      </div>
+    </section>
+  </main>
+
+  <dialog class="confirm-dialog profile-dialog" id="profile-dialog">
+    <form id="profile-form">
+      <p class="eyebrow">Local user</p>
+      <h2>Create a user</h2>
+      <p>This user will have separate time records, jobs, wages, settings, payments, and images in this browser.</p>
+      <label class="field"><span>User name</span><input id="profile-name" type="text" maxlength="50" autocomplete="off" required placeholder="For example, John"></label>
+      <div class="form-message" id="profile-message" role="alert"></div>
+      <div class="dialog-actions">
+        <button class="button secondary" id="profile-cancel" type="button">Cancel</button>
+        <button class="button primary" type="submit">Create user</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="shared.js?v=24"></script>
+  <script src="profile-ui.js?v=22"></script>
+  <script src="payments.js?v=2"></script>
+</body>
+</html>
