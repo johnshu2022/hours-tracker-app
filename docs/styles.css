@@ -126,7 +126,7 @@ h2 { margin: 0; font-size: 1.25rem; letter-spacing: -.025em; }
 .recent-item span { color: var(--muted); font-size: .8rem; }
 .privacy-note { margin: 20px 0 0; text-align: center; color: var(--muted); font-size: .78rem; }
 
-.entry-layout { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(260px, .75fr); gap: 16px; align-items: start; }
+.entry-layout { min-width: 0; display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(260px, .75fr); gap: 16px; align-items: start; }
 .import-panel { margin-bottom: 16px; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(320px, .9fr); gap: 36px; align-items: center; border-color: #536422; background: linear-gradient(135deg, #172018, var(--surface) 62%); }
 .import-copy > p:not(.eyebrow) { margin: 9px 0 0; max-width: 620px; color: var(--muted); font-size: .9rem; line-height: 1.55; }
 .import-copy > p strong { color: var(--text); }
@@ -136,7 +136,7 @@ h2 { margin: 0; font-size: 1.25rem; letter-spacing: -.025em; }
 .import-controls input[type="file"]::file-selector-button { display: none; }
 .import-buttons { display: flex; gap: 10px; }
 .import-message { min-height: 20px; color: var(--accent); font-size: .82rem; }
-.form-panel { padding: 28px; }
+.form-panel { min-width: 0; max-width: 100%; padding: 28px; }
 .form-grid { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; }
 .full-field { grid-column: 1 / -1; }
 .field { min-width: 0; display: grid; gap: 8px; color: var(--muted); font-size: .82rem; font-weight: 750; }
@@ -144,6 +144,7 @@ h2 { margin: 0; font-size: 1.25rem; letter-spacing: -.025em; }
 input, textarea, select { width: 100%; min-width: 0; max-width: 100%; border: 1px solid var(--line); border-radius: 10px; background: #0d141b; color: var(--text); padding: 12px 13px; outline: none; }
 input:focus, textarea:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(227, 255, 115, .1); }
 textarea { resize: vertical; line-height: 1.45; }
+.break-section, #break-list { min-width: 0; max-width: 100%; }
 .break-section { margin: 26px 0; padding: 22px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .section-line p { margin: 5px 0 0; color: var(--muted); font-size: .82rem; }
 .break-row { margin-top: 14px; display: grid; grid-template-columns: 1fr 1fr 38px; gap: 10px; align-items: end; }
@@ -310,8 +311,21 @@ td span { display: block; margin-top: 4px; font-size: .76rem; }
   .dashboard-heading-actions .button { width: 100%; }
   .metric-grid, .form-grid { grid-template-columns: minmax(0, 1fr); }
   .full-field { grid-column: auto; }
-  .form-panel, .form-grid, .form-grid > * { min-width: 0; }
-  input[type="date"], input[type="time"], input[type="month"] { width: 100%; min-width: 0; max-width: 100%; inline-size: 100%; min-inline-size: 0; font-size: 16px; }
+  .entry-layout, #shift-form, .form-panel, .form-grid, .form-grid > *, .break-section, #break-list, .break-row, .field {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+  input[type="date"], input[type="time"], input[type="month"] {
+    display: block;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    inline-size: 100% !important;
+    min-inline-size: 0 !important;
+    max-inline-size: 100% !important;
+    font-size: 16px;
+  }
   .metric-card { min-height: 138px; }
   .panel, .form-panel { padding: 19px; }
   .week-chart { gap: 5px; }

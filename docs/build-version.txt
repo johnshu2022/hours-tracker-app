@@ -1,2 +1,2 @@
-Hourglass build 32
-Direct GitHub Pages branch publishing
+Hourglass build 33
+Mobile time-entry sizing and cache refresh

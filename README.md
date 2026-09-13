@@ -2,7 +2,7 @@
 
 A responsive, browser-based work-hours tracker built with HTML, CSS, and JavaScript. It records shifts and breaks, calculates net hours for the day, week, and month, displays a seven-day chart, and imports or exports time-card data as CSV or PDF.
 
-This package is Hourglass build 32. The `docs` directory is the single website source used by both GitHub Pages and the Podman container. GitHub Pages publishes it directly from the `main` branch, without GitHub Actions.
+This package is Hourglass build 33. The `docs` directory is the single website source used by both GitHub Pages and the Podman container. GitHub Pages publishes it directly from the `main` branch, without GitHub Actions.
 
 ## GitHub Pages
 
