@@ -8,6 +8,8 @@ This folder contains the complete static Hourglass application. The three primar
 
 The additional HTML and JavaScript files provide Time Entries, Payments, Settings, profiles, image metadata, PDF export, and full backup/restore. Keep all files together so those features continue to work.
 
+This edition includes the mobile form-width fix from Hourglass build 30, preventing native date and time controls from extending beyond the Time Entries card.
+
 ## Publish with GitHub Pages
 
 1. Create a new GitHub repository. Do not add a template README or `.gitignore` when creating it.
