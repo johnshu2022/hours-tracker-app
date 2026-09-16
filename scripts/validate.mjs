@@ -28,6 +28,7 @@ function fail(file, message) {
 }
 
 const requiredFiles = [
+  '.nojekyll',
   'index.html',
   'entry.html',
   'payments.html',
@@ -40,6 +41,33 @@ const requiredFiles = [
   'payments.js',
   'build-version.txt'
 ];
+
+const forbiddenRepositoryPaths = [
+  '.github/workflows',
+  'docs/_config.yml',
+  'docs/Gemfile',
+  'docs/Gemfile.lock',
+  'docs/_layouts',
+  'docs/_includes',
+  'docs/_posts',
+  'docs/assets/css/style.scss'
+];
+
+try {
+  const rootNoJekyll = await stat(path.join(repositoryRoot, '.nojekyll'));
+  if (!rootNoJekyll.isFile()) errors.push('.nojekyll: required path is not a file');
+} catch {
+  errors.push('.nojekyll: required repository-level Jekyll bypass file is missing');
+}
+
+for (const forbiddenPath of forbiddenRepositoryPaths) {
+  try {
+    await stat(path.join(repositoryRoot, forbiddenPath));
+    errors.push(`${forbiddenPath}: remove this Jekyll or custom workflow path before publishing`);
+  } catch {
+    // The path is intentionally absent.
+  }
+}
 
 for (const requiredFile of requiredFiles) {
   try {

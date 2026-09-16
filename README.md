@@ -2,17 +2,18 @@
 
 A responsive, browser-based work-hours tracker built with HTML, CSS, and JavaScript. It records shifts and breaks, calculates net hours for the day, week, and month, displays a seven-day chart, and imports or exports time-card data as CSV or PDF.
 
-This package is Hourglass build 33. The `docs` directory is the single website source used by both GitHub Pages and the Podman container. GitHub Pages publishes it directly from the `main` branch, without GitHub Actions.
+This package is Hourglass build 34. The `docs` directory is the single website source used by both GitHub Pages and the Podman container. GitHub Pages publishes it directly from the `main` branch without a repository-managed deployment workflow or Jekyll build.
 
 ## GitHub Pages
 
-1. Put the complete project at the root of your GitHub repository.
-2. Commit and push the files to the `main` branch.
-3. Open the repository's **Settings**, then **Pages**.
-4. Under **Build and deployment**, set **Source** to **Deploy from a branch**.
-5. Select the `main` branch and `/docs` folder, then choose **Save**.
+1. Remove any old `.github/workflows` directory and any Jekyll files listed in `DEPLOYMENT-CLEANUP.md`. Uploading a ZIP does not delete old repository files.
+2. Put the complete project at the root of your GitHub repository.
+3. Commit and push the files to the `main` branch.
+4. Open the repository's **Settings**, then **Pages**.
+5. Under **Build and deployment**, set **Source** to **Deploy from a branch**.
+6. Select the `main` branch and `/docs` folder, then choose **Save**.
 
-GitHub Pages will publish changes after they are committed and pushed to `main`. No workflow, action dependency, deployment token, or repository secret is required.
+The package includes `.nojekyll` at both the repository root and the publishing-source root. GitHub Pages will publish changes after they are committed and pushed to `main`. GitHub still performs its internal Pages deployment, but this repository contains no custom deployment workflow, action dependency, deployment token, or repository secret.
 
 For later changes, edit files inside `docs`, run the included validator locally, and then commit them. The validator checks JavaScript syntax, HTML IDs, local assets, relative paths, browser security policies, and accidental sensitive files.
 
@@ -22,7 +23,7 @@ Run the same validation locally with:
 node scripts/validate.mjs
 ```
 
-Because there is no automated workflow, GitHub will not run the validator for you. Run it before every push and consider protecting `main` from accidental force-pushes or deletion with a repository ruleset.
+Because there is no repository-managed validation workflow, GitHub will not run the validator for you. Run it before every push and consider protecting `main` from accidental force-pushes or deletion with a repository ruleset.
 
 CSV imports require `Date`, `Clock In`, and `Clock Out` headers. `Job`, `Break Minutes`, and `Notes` are optional. Dates may use `YYYY-MM-DD` or U.S. `MM/DD/YYYY`; times may use 24-hour time or `AM`/`PM`. Duplicate shifts are skipped.
 

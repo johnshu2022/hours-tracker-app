@@ -1,2 +1,2 @@
-Hourglass build 33
-Mobile time-entry sizing and cache refresh
+Hourglass build 34
+Clean GitHub Pages branch publishing without Jekyll
